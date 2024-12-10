@@ -1,9 +1,11 @@
-
+from db.database import maak_connectie, setup_database
 
 
 
 def main():
 	
+	setup_database()
+
 	'''
 	#Weergeven welke acties allemaal mogelijk zijn voor dit programma
 	acties = {
@@ -29,11 +31,11 @@ def main():
 		acties[user_input][1]()
 	else:
    		print("Ongeldige keuze, probeer het opnieuw")
-
+	'''
 if __name__ == '__main__':
 	
 	main()
-	'''
+	
 	
 
 	
