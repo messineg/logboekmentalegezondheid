@@ -7,5 +7,8 @@ __pycache__/
 # Ignore config files with sensitive data
 config.json
 
-# Ignore SQLite database files (optional, afhankelijk van je voorkeur)
-data/*.db
+# Negeer de lokale database files
+applicatie/data/*.db
+
+# Negeer de lokale export files
+applicatie/export/*.csv
