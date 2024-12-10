@@ -45,10 +45,11 @@ def setup_database():
 
 	cursor.execute('''CREATE TABLE IF NOT EXISTS Entries (
 					id INTEGER PRIMARY KEY AUTOINCREMENT,
-					date TEXT,
+					date DATE,
 					mood INTEGER,
-					note TEXT
-					UNIQUE(date))''')
+					note TEXT,
+					UNIQUE(date, mood))''')
+
 
 	#Gegevens doorvoeren en connectie afsluiten
 	dbconnectie.commit()
