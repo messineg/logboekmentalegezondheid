@@ -1,0 +1,11 @@
+# Ignore the virtual environment folder
+venv/
+
+# Ignore compiled Python files
+__pycache__/
+
+# Ignore config files with sensitive data
+config.json
+
+# Ignore SQLite database files (optional, afhankelijk van je voorkeur)
+data/*.db
