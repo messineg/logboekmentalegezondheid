@@ -1,3 +1,10 @@
 {
-    "database": "data/example.db"
+  "database": {
+    "naam": "mental_log.db",
+    "locatie": "data/"
+  },
+  "export": {
+    "naam": "export_entries.csv",
+    "locatie": "export/"
+  }
 }
