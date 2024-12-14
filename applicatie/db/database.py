@@ -48,6 +48,9 @@ def setup_database():
 					date DATE,
 					mood INTEGER,
 					note TEXT,
+					emotions TEXT,
+					triggers TEXT,
+					successes TEXT,
 					UNIQUE(date, mood))''')
 
 
