@@ -1,10 +1,14 @@
 {
   "database": {
-    "naam": "mental_log.db",
-    "locatie": "data/"
+    "name": "mental_log.db",
+    "location": "data/"
+  },
+  "advices": {
+    "name": "mood_advices.csv",
+    "location": "data/"
   },
   "export": {
-    "naam": "export_entries.csv",
-    "locatie": "export/"
+    "name": "export_entries.csv",
+    "location": "export/"
   }
 }
