@@ -34,7 +34,7 @@ def maak_connectie():
 	except sqlite3.Error as error:
 		print(f"Er deed zich een fout voor: {error}")
 
-def verkrijg_cursor():
+def fetch_cursor():
 	#Functie om niet telkens de code te moeten herhalen om de cursor op te halen
 	dbconnectie= maak_connectie()
 	cursor = dbconnectie.cursor()
@@ -42,7 +42,7 @@ def verkrijg_cursor():
 	return dbconnectie, cursor
 
 def setup_database():
-	dbconnectie, cursor = verkrijg_cursor()
+	dbconnectie, cursor = fetch_cursor()
 
 	#Controleer of de setup al is uitgevoerd
 	'''cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='Entries'")
@@ -72,24 +72,30 @@ def setup_database():
 
 def load_and_insert_advice():
 
-	dbconnectie, cursor = verkrijg_cursor()
+	dbconnectie, cursor = fetch_cursor()
 
-	csv_path = fetch_location_advice()
-
-	with open(csv_path, "r") as inputbestand:
-		reader = csv.reader(inputbestand)
-		for row in reader:
-			print(row)
-
-	query = '''CREATE TABLE IF NOT EXISTS Advices (
+	query_createtable = '''CREATE TABLE IF NOT EXISTS Advices (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     min_mood INTEGER NOT NULL,
     max_mood INTEGER NOT NULL,
     advice TEXT NOT NULL)'''
 
-	#Er moet code worden voorzien die de tabel iedere keer leegmaakt en opvult met wat er in de csv zit
+	csv_path = fetch_location_advice()
+	cursor.execute(query_createtable)
 
-	cursor.execute(query)
+	cursor.execute("DELETE FROM Advices")
+
+	query_insertadvices = '''INSERT INTO Advices (min_mood, max_mood, advice) VALUES (?, ?, ?)'''
+
+	with open(csv_path, "r") as inputbestand:
+		reader = csv.DictReader(inputbestand, delimiter=";")
+		for row in reader:
+			try:
+				cursor.execute(query_insertadvices, (int(row["min_mood"]), int(row["max_mood"]), row["advice"]))
+			except FileNotFoundError:
+				print(f"CSV-bestand niet gevonden: {csv_path}")
+			except Exception as error:
+				print(f"Fout bij het inlezen van de csv: {error}")
 
 	dbconnectie.commit()
 	print("Tabel Advices werd toegevoegd")

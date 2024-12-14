@@ -1,13 +1,12 @@
 import sqlite3
 from datetime import datetime
-from db.database import verkrijg_cursor
+from db.database import fetch_cursor
 from functies.view_entries import view_entries_all
 
 
 def add_entry():
-	dbconnectie, cursor = verkrijg_cursor()
+	dbconnectie, cursor = fetch_cursor()
 
-	#NOG TE DOEN: DATUM VALIDATIE
 	try:
 		date_input = input("Geef de datum in (YYYY-MM-DD) ")
 		valid_date = datetime.strptime(date_input, "%Y-%m-%d")
@@ -43,3 +42,6 @@ def add_entry():
 
 	#Afsluiten van de connectie
 	dbconnectie.close()
+
+def fetch_advice(date_input, mood):
+	print("Hier komt de logica waar ik advies ga tonen aan de gebruiker")

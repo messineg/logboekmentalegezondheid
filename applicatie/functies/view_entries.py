@@ -1,9 +1,9 @@
 import sqlite3
-from db.database import verkrijg_cursor
+from db.database import fetch_cursor
 
 def view_entries_all():
 	#Ophalen van de connectie en de cursor
-	dbconnectie, cursor = verkrijg_cursor()
+	dbconnectie, cursor = fetch_cursor()
 	
 	#Definieer de query om code leesbaarder te maken
 	query = 'SELECT * FROM Entries ORDER BY date DESC'
