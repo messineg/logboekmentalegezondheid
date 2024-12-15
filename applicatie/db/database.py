@@ -84,10 +84,10 @@ def load_and_insert_advice():
 	csv_path = fetch_location_advice()
 	cursor.execute(query_createtable)
 
-	cursor.execute("DELETE FROM Advices")
-
-	query_insertadvices = '''INSERT INTO Advices (min_mood, max_mood, advice) VALUES (?, ?, ?)'''
-
+	###cursor.execute("DELETE FROM Advices")
+	
+	###query_insertadvices = '''INSERT INTO Advices (min_mood, max_mood, advice) VALUES (?, ?, ?)'''
+	'''
 	with open(csv_path, "r") as inputbestand:
 		reader = csv.DictReader(inputbestand, delimiter=";")
 		for row in reader:
@@ -97,7 +97,7 @@ def load_and_insert_advice():
 				print(f"CSV-bestand niet gevonden: {csv_path}")
 			except Exception as error:
 				print(f"Fout bij het inlezen van de csv: {error}")
-
+	'''			
 	dbconnectie.commit()
 	print("Tabel Advices werd toegevoegd")
 

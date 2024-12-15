@@ -24,6 +24,7 @@ def view_entries_all():
 	else:
 		print("Er werden geen entries gevonden")
 	
+	return results
 	#Afsluiten connectie
 	dbconnectie.close()
 

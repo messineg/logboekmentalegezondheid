@@ -14,7 +14,7 @@ applicatie/data/*.db
 applicatie/export/*.csv
 
 # Negeer de testdata python file
-applicatie/data/testdata.py
+applicatie/testdata.py
 
 # Negeer de testdata csv file
 applicatie/data/test_entries.csv

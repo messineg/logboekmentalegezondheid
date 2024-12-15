@@ -1,6 +1,7 @@
 from db.database import maak_connectie, setup_database
 from functies.view_entries import view_entries_all, view_entries_lastweek
 from functies.add_entries import add_entry
+from functies.analyze_entries import plot_mood_over_time
 
 
 
@@ -8,12 +9,12 @@ def main():
 	
 	setup_database()
 
-	
 	#Weergeven welke acties allemaal mogelijk zijn voor dit programma
 	acties = {
     "1": ("Toon alle entries", view_entries_all),
     "2": ("Voeg entry toe", add_entry),
-    "3": ("Toon entries van de laatste zeven dagen", view_entries_lastweek)
+    "3": ("Toon entries van de laatste zeven dagen", view_entries_lastweek),
+    "4": ("Maak een analyze van de entries", plot_mood_over_time)
 	}
 
 	print("Beschikbare acties:")
