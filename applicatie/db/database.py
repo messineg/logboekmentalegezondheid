@@ -75,10 +75,11 @@ def load_and_insert_advice():
 	dbconnectie, cursor = fetch_cursor()
 
 	query_createtable = '''CREATE TABLE IF NOT EXISTS Advices (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    min_mood INTEGER NOT NULL,
-    max_mood INTEGER NOT NULL,
-    advice TEXT NOT NULL)'''
+    							id INTEGER PRIMARY KEY AUTOINCREMENT,
+    							min_mood INTEGER NOT NULL,
+    							max_mood INTEGER NOT NULL,
+    							advice TEXT NOT NULL,
+    							UNIQUE (min_mood, max_mood, advice))'''
 
 	csv_path = fetch_location_advice()
 	cursor.execute(query_createtable)
