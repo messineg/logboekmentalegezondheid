@@ -46,7 +46,7 @@ def view_entries_lastweek():
 		else:
 			print("Geen entries gevonden voor de laatste week.")
     
-	except sqlite3.Error as e:
-		print(f"Fout bij het ophalen van entries: {e}")
+	except sqlite3.Error as error:
+		print(f"Fout bij het ophalen van entries: {error}")
 	finally:
 		dbconnectie.close()
