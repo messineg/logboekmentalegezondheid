@@ -51,7 +51,7 @@ def setup_database():
 		dbconnectie.close()
 		return'''
 
-	query = '''CREATE TABLE IF NOT EXISTS Entries (
+	query_create_entries = '''CREATE TABLE IF NOT EXISTS Entries (
 					id INTEGER PRIMARY KEY AUTOINCREMENT,
 					date DATE,
 					mood INTEGER,
@@ -61,8 +61,35 @@ def setup_database():
 					successes TEXT,
 					UNIQUE(date, mood))'''
 
-	cursor.execute(query)
+	cursor.execute(query_create_entries)
 
+	query_create_moodcategories = '''CREATE TABLE IF NOT EXISTS MoodCategories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    min_mood INTEGER NOT NULL,
+    max_mood INTEGER NOT NULL,
+    category TEXT NOT NULL,
+    color TEXT NOT NULL)'''
+
+
+	cursor.execute(query_create_moodcategories)
+
+	cursor.execute('''
+        INSERT OR IGNORE INTO MoodCategories (min_mood, max_mood, category, color)
+        VALUES 
+            (0, 3, 'Slecht', '#FF0000'),
+            (4, 6, 'Neutraal - Minder', '#FF8C00'),
+            (7, 10, 'Goed', '#00FF00')
+        ''')
+
+	query_create_advices = '''CREATE TABLE IF NOT EXISTS Advices (
+    							id INTEGER PRIMARY KEY AUTOINCREMENT,
+    							min_mood INTEGER NOT NULL,
+    							max_mood INTEGER NOT NULL,
+    							advice TEXT NOT NULL,
+    							UNIQUE (min_mood, max_mood, advice))'''
+
+
+	cursor.execute(query_create_advices)
 
 	#Gegevens doorvoeren en connectie afsluiten
 	dbconnectie.commit()
@@ -74,15 +101,10 @@ def load_and_insert_advice():
 
 	dbconnectie, cursor = fetch_cursor()
 
-	query_createtable = '''CREATE TABLE IF NOT EXISTS Advices (
-    							id INTEGER PRIMARY KEY AUTOINCREMENT,
-    							min_mood INTEGER NOT NULL,
-    							max_mood INTEGER NOT NULL,
-    							advice TEXT NOT NULL,
-    							UNIQUE (min_mood, max_mood, advice))'''
+	
 
 	csv_path = fetch_location_advice()
-	cursor.execute(query_createtable)
+	
 
 	###cursor.execute("DELETE FROM Advices")
 	
