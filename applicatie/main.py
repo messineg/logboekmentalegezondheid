@@ -8,7 +8,7 @@ from functies.analyze_entries import plot_mood_over_time_all, plot_mood_over_tim
 def main():
 	
 	setup_database()
-
+	print("Welkom bij de mood tracker!")
 	#Weergeven welke acties allemaal mogelijk zijn voor dit programma
 	acties = {
     "1": ("Toon alle entries", view_entries_all),
