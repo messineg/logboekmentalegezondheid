@@ -9,3 +9,6 @@ class Entry(models.Model):
 
     def __str__(self):
         return f"{self.date} - Mood: {self.mood} - Note: {self.note}"
+    
+    class Meta:
+        db_table = 'Entries'

@@ -1,18 +1,60 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entries</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 <body>
-    <h1>All Entries</h1>
-    <ul>
-        {% for entry in entries %}
-            <li>{{ entry.date }} - Mood: {{ entry.mood }} - Note: {{ entry.note }}</li>
-        {% empty %}
-            <p>No entries found</p>
-        {% endfor %}
-    </ul>
+    <a href="{% url 'add_entry' %}" class="button is-primary mb-4">Add New Entry</a>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Entries</h1>
+        <!-- Filter Form -->
+        <form method="get" class="mb-4">
+            <div class="field is-grouped">
+                <div class="control">
+                    <input class="input" type="date" name="start_date" placeholder="Start Date" value="{{ request.GET.start_date }}">
+                </div>
+                <div class="control">
+                    <input class="input" type="date" name="end_date" placeholder="End Date" value="{{ request.GET.end_date }}">
+                </div>
+                <div class="control">
+                    <input class="input" type="text" name="mood" placeholder="Mood" value="{{ request.GET.mood }}">
+                </div>
+                <div class="control">
+                    <button class="button is-primary" type="submit">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Table -->
+        <table class="table is-striped is-fullwidth">
+            <thead>
+                <tr>
+                    <th><a href="?sort=date">Date</a></th>
+                    <th><a href="?sort=mood">Mood</a></th>
+                    <th>Entry</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ entry.date }}</td>
+                    <td>{{ entry.mood }}</td>
+                    <td>{{ entry.note }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No entries found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 </body>
 </html>
+
