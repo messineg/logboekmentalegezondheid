@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Advices</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Advices</h1>
+        <a href="{% url 'advice_add' %}" class="button is-primary">Add New Advice</a>
+        <table class="table is-fullwidth is-striped">
+            <thead>
+                <tr>
+                    <th>Min Mood</th>
+                    <th>Max Mood</th>
+                    <th>Advice</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for advice in advices %}
+                <tr>
+                    <td>{{ advice.min_mood }}</td>
+                    <td>{{ advice.max_mood }}</td>
+                    <td>{{ advice.advice }}</td>
+                    <td>
+                        <a href="{% url 'advice_edit' advice.id %}" class="button is-small is-info">Edit</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No advices available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

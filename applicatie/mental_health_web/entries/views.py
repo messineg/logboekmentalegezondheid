@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Entry, Advice
-from.forms import EntryForm
+from.forms import EntryForm, AdviceForm
 # Create your views here.
 
 def entry_list(request):
@@ -41,3 +41,23 @@ def add_entry(request):
         form = EntryForm()
     
     return render(request, 'entries/add_entry.html', {'form': form})
+
+def advice_list(request):
+    advices = Advice.objects.all()
+    return render(request, 'entries/advice_list.html', {'advices': advices})
+
+def advice_edit(request, advice_id=None):
+    if advice_id:
+        advice = get_object_or_404(Advice,id=advice_id)
+    else:
+        advice = None
+    
+    if request.method == 'POST':
+        form = AdviceForm(request.POST, instance=advice)
+        if form.is_valid():
+            form.save()
+            return redirect('advice_list')
+    else:
+        form = AdviceForm(instance=advice)
+
+    return render(request, 'entries/advice_edit.html', {'form': form})

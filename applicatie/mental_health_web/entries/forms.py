@@ -1,5 +1,5 @@
 from django import forms
-from .models import Entry
+from .models import Entry, Advice
 from django.utils import timezone
 
 class EntryForm(forms.ModelForm):
@@ -23,3 +23,8 @@ class EntryForm(forms.ModelForm):
         if mood < 1 or mood > 10:
             raise forms.ValidationError("Mood must be between 1 and 10")
         return mood
+    
+class AdviceForm(forms.ModelForm):
+    class Meta:
+        model = Advice
+        fields = ['min_mood', 'max_mood', 'advice']
