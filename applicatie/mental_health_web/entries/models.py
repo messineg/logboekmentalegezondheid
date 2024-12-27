@@ -12,3 +12,12 @@ class Entry(models.Model):
     
     class Meta:
         db_table = 'Entries'
+
+class Advice(models.Model):
+    min_mood = models.IntegerField()
+    max_mood = models.IntegerField()
+    advice = models.TextField()
+
+    def __str__(self):
+        return f"{self.advice}"
+    

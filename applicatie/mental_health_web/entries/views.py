@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Entry
+from .models import Entry, Advice
 from.forms import EntryForm
 # Create your views here.
 
@@ -29,13 +29,15 @@ def add_entry(request):
         print("Form is valid: ", form.is_valid())
 
         if form.is_valid():
-            form.save()
-            print("Redirecting to entry_list")
-            return redirect('entry_list')
-        else:
-            print("Rendering form with errors")
-            return render(request, 'entries/add_entry.html', {'form': form})
+            new_entry = form.save()
+
+            mood = new_entry.mood
+            print(f"Looking for advice where {mood} is between min_mood and max_mood")
+            advices = Advice.objects.filter(min_mood__lte=mood, max_mood__gte=mood)
+            print(f"Advice found: {advices}")
+            return render(request, 'entries/entry_added.html', {'entry': new_entry, 'advices': advices})
+        
     else:
-        print("Rendering empty form")
         form = EntryForm()
-        return render(request, 'entries/add_entry.html', {'form': form})
+    
+    return render(request, 'entries/add_entry.html', {'form': form})
