@@ -7,9 +7,6 @@ __pycache__/
 # Ignore config files with sensitive data
 config.json
 
-# Negeer de lokale database files
-applicatie/data/*.db
-
 # Negeer de lokale export files
 applicatie/export/*.csv
 
