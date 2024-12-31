@@ -81,7 +81,7 @@ def setup_database():
             (7, 10, 'Goed', '#00FF00')
         ''')
 
-	query_create_advices = '''CREATE TABLE IF NOT EXISTS Advices (
+	query_create_advices = '''CREATE TABLE IF NOT EXISTS entries_advice (
     							id INTEGER PRIMARY KEY AUTOINCREMENT,
     							min_mood INTEGER NOT NULL,
     							max_mood INTEGER NOT NULL,
@@ -90,6 +90,19 @@ def setup_database():
 
 
 	cursor.execute(query_create_advices)
+
+	query_create_advice_feedback = '''CREATE TABLE IF NOT EXISTS AdviceFeedback (
+							id INTEGER PRIMARY KEY AUTOINCREMENT,
+    						advice_id INTEGER NOT NULL,
+    						entry_id INTEGER,
+    						followed BOOLEAN NOT NULL DEFAULT 0,
+    						score INTEGER,
+    						timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    						FOREIGN KEY (advice_id) REFERENCES entries_advice (id) ON DELETE CASCADE,
+    						FOREIGN KEY (entry_id) REFERENCES Entries (id) ON DELETE SET NULL
+	)'''
+
+	cursor.execute(query_create_advice_feedback)		
 
 	#Gegevens doorvoeren en connectie afsluiten
 	dbconnectie.commit()
@@ -101,15 +114,12 @@ def load_and_insert_advice():
 
 	dbconnectie, cursor = fetch_cursor()
 
-	
-
 	csv_path = fetch_location_advice()
 	
-
-	###cursor.execute("DELETE FROM Advices")
+	cursor.execute("DELETE FROM entries_advice")
 	
-	###query_insertadvices = '''INSERT INTO Advices (min_mood, max_mood, advice) VALUES (?, ?, ?)'''
-	'''
+	query_insertadvices = '''INSERT INTO entries_advice (min_mood, max_mood, advice) VALUES (?, ?, ?)'''
+	
 	with open(csv_path, "r") as inputbestand:
 		reader = csv.DictReader(inputbestand, delimiter=";")
 		for row in reader:
@@ -119,7 +129,7 @@ def load_and_insert_advice():
 				print(f"CSV-bestand niet gevonden: {csv_path}")
 			except Exception as error:
 				print(f"Fout bij het inlezen van de csv: {error}")
-	'''			
+			
 	dbconnectie.commit()
 	print("Tabel Advices werd toegevoegd")
 

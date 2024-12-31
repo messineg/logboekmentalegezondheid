@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entries</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
     <nav class="navbar is-primary">
@@ -24,6 +24,7 @@
             <div class="navbar-start">
                 <a class="navbar-item" href="{% url 'add_entry' %}">Add New Entry</a>
                 <a class="navbar-item" href="{% url 'advice_list' %}">View Advices</a>
+                <a class="navbar-item" href="{% url 'statistics' %}">Statistics</a>
             </div>
         </div>
     </nav>
@@ -52,9 +53,10 @@
         <table class="table is-striped is-fullwidth">
             <thead>
                 <tr>
-                    <th><a href="?sort=date">Date</a></th>
-                    <th><a href="?sort=mood">Mood</a></th>
+                    <th><a href="?sort=-date">Date</a></th>
+                    <th><a href="?sort=-mood">Mood</a></th>
                     <th>Entry</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,6 +65,14 @@
                     <td>{{ entry.date }}</td>
                     <td>{{ entry.mood }}</td>
                     <td>{{ entry.note }}</td>
+                    <td>
+                        {% if entry.has_feedback %}
+                            <span class="tag is-success">Feedback Exists</span>
+                        {% else %}
+                            <a class="button is-small is-primary" href="{% url 'entry_feedback' entry.id %}">Add Feedback</a>
+                        {% endif %}
+        
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

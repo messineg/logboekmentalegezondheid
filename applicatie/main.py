@@ -6,10 +6,11 @@ from functies.analyze_entries import plot_mood_over_time_all, plot_mood_over_tim
 
 
 def main():
-	
+	print("Opstart van de tracker applicatie")
 	setup_database()
-	print("Welkom bij de mood tracker!")
-	#Weergeven welke acties allemaal mogelijk zijn voor dit programma
+
+	'''Onderstaande is allemaal logica voor het runnen van de CLI applicatie'''
+	'''
 	acties = {
     "1": ("Toon alle entries", view_entries_all),
     "2": ("Voeg entry toe", add_entry),
@@ -29,7 +30,7 @@ def main():
 	if user_input in acties:
 		acties[user_input][1]()
 	else:
-   		print("Ongeldige keuze, probeer het opnieuw")
+   		print("Ongeldige keuze, probeer het opnieuw")'''
 
 if __name__ == '__main__':
 	

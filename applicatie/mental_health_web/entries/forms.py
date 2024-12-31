@@ -1,5 +1,5 @@
 from django import forms
-from .models import Entry, Advice
+from .models import Entry, Advice, AdviceFeedback
 from django.utils import timezone
 
 class EntryForm(forms.ModelForm):
@@ -28,3 +28,9 @@ class AdviceForm(forms.ModelForm):
     class Meta:
         model = Advice
         fields = ['min_mood', 'max_mood', 'advice']
+
+
+class AdviceFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = AdviceFeedback
+        fields = ['followed', 'score']
