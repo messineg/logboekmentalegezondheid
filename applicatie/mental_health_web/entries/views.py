@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Entry, Advice, AdviceFeedback
 from.forms import EntryForm, AdviceForm, AdviceFeedbackForm
 from django.db.models import Avg, Count, Max, Min, Q, Exists, OuterRef
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required
 def entry_list(request):
     sort = request.GET.get('sort', 'date')
     start_date = request.GET.get('start_date')
