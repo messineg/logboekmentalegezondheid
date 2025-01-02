@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Calendar</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title is-3">Habit Calendar</h1>
+        <table class="table is-bordered is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Habit</th>
+                    {% for date in dates %}
+                        <th>{{ date|date:"D M d" }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in calendar_data %}
+                    <tr>
+                        <td>{{ item.habit.name }}</td>
+                        {% for day in item.days %}
+                            <td>
+                                <form method="post" action="{% url 'toggle_habit' item.habit.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="date" value="{{ day.date }}">
+                                    <label class="checkbox">
+                                        <input type="checkbox" {% if day.completed %}checked{% endif %} onchange="this.form.submit()">
+                                    </label>
+                                </form>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

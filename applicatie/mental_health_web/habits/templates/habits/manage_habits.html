@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Your Habits</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css" rel="stylesheet">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Manage Your Habits</h1>
+            <table class="table is-fullwidth is-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for habit in habits %}
+                    <tr>
+                        <td>{{ habit.name }}</td>
+                        <td>{{ habit.description }}</td>
+                        <td>
+                            <a href="{% url 'edit_habit' habit.id %}" class="button is-small is-info">Edit</a>
+                            <form method="post" action="{% url 'manage_habits' %}" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                                <button type="submit" name="delete_habit" class="button is-small is-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'add_habit' %}" class="button is-primary">Add New Habit</a>
+        </div>
+    </section>
+</body>
+</html>

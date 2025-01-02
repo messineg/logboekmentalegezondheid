@@ -1,0 +1,75 @@
+{% load custom_filters %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker</title>
+    <!-- Bulma CSS link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar is-light mb-5">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">Mental Health Hub</a>
+                <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
+                <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
+                <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
+            </div>
+        </nav>
+
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card">
+                    <div class="card-content has-text-centered">
+                        <p class="title is-2">{{ total_habits }}</p>
+                        <p class="subtitle">Active Habits</p>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-one-third">
+                <div class="card has-background-success has-text-white">
+                    <div class="card-content has-text-centered">
+                        <p class="title is-2">{{ completion_rate }}%</p>
+                        <p class="subtitle">Completed Today</p>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                {% for habit in habit_data %}
+                    <div class="column is-one-third">
+                        <div class="card">
+                            <div class="card-content has-text-centered">
+                                <h3 class="title is-4">{{ habit.name }}</h3>
+                                <p class="subtitle">Streak: {{ streaks|get_item:habit.name }} days</p>
+                                <!-- Voeg andere details toe -->
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="box">
+            <h2 class="title is-4">Today's Habits</h2>
+            <ul>
+                {% for habit in habits_today %}
+                    <li>
+                        <span class="tag is-info">{{ habit.name }}</span>
+                        {% if habit.completed %}
+                            <span class="tag is-success">Completed</span>
+                        {% else %}
+                            <span class="tag is-warning">Pending</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>    
+    <!-- Bulma JS (optional for some features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bulma@0.9.3/js/bulma.min.js"></script>
+</body>
+</html>
