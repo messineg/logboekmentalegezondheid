@@ -38,21 +38,21 @@
                     </div>
                 </div>
             </div>
-            <div class="columns">
-                {% for habit in habit_data %}
-                    <div class="column is-one-third">
-                        <div class="card">
-                            <div class="card-content has-text-centered">
-                                <h3 class="title is-4">{{ habit.name }}</h3>
-                                <p class="subtitle">Streak: {{ streaks|get_item:habit.name }} days</p>
-                                <!-- Voeg andere details toe -->
-                            </div>
+            
+        </div>
+        <div class="columns">
+            {% for habit in habit_data %}
+                <div class="column is-one-third">
+                    <div class="card">
+                        <div class="card-content has-text-centered">
+                            <h3 class="title is-4">{{ habit.name }}</h3>
+                            <p class="subtitle">Streak: {{ streaks|get_item:habit.name }} days</p>
+                            <!-- Voeg andere details toe -->
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
-        
         <div class="box">
             <h2 class="title is-4">Today's Habits</h2>
             <ul>

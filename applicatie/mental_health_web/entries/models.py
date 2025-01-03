@@ -35,7 +35,7 @@ class AdviceFeedback(models.Model):
     advice = models.ForeignKey('Advice', on_delete=models.CASCADE, related_name='feedback')
     entry = models.ForeignKey('Entry', on_delete=models.SET_NULL, null=True, blank=True)
     followed = models.BooleanField(default=False)  # Heeft de gebruiker het advies opgevolgd?
-    score = models.IntegerField(null=True, blank=True, choices=[(i, i) for i in range(1,11)]) 
+    score = models.IntegerField(null=True, blank=True, choices=[(i, i) for i in range(1,6)]) 
     timestamp = models.DateTimeField(auto_now_add=True)  # Automatisch toevoegen tijdstip
 
     def __str__(self):

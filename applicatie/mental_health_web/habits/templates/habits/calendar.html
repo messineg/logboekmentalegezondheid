@@ -5,38 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Calendar</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <style>
+        .is-checkradio {
+            width: 1.5em;
+            height: 1.5em;
+            cursor: pointer;
+        }
+        .is-selected {
+            background-color: #f0f8ff !important;
+        }
+        .habit-name {
+            min-width: 150px;
+        }
+    </style>
 </head>
-<body>
+<body class="section">
     <div class="container">
-        <h1 class="title is-3">Habit Calendar</h1>
-        <table class="table is-bordered is-fullwidth">
-            <thead>
-                <tr>
-                    <th>Habit</th>
-                    {% for date in dates %}
-                        <th>{{ date|date:"D M d" }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in calendar_data %}
+        <h1 class="title is-3 mb-5">Habit Calendar</h1>
+        
+        <div class="table-container">
+            <table class="table is-bordered is-fullwidth">
+                <thead>
                     <tr>
-                        <td>{{ item.habit.name }}</td>
-                        {% for day in item.days %}
-                            <td>
-                                <form method="post" action="{% url 'toggle_habit' item.habit.id %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="date" value="{{ day.date }}">
-                                    <label class="checkbox">
-                                        <input type="checkbox" {% if day.completed %}checked{% endif %} onchange="this.form.submit()">
-                                    </label>
-                                </form>
-                            </td>
+                        <th class="habit-name">Habit</th>
+                        {% for date_info in dates %}
+                            <th class="has-text-centered {% if date_info == today %}is-selected{% endif %}">
+                                {{ date_info|date:"D M d" }}
+                                <br>
+                                <span class="is-size-7">{{ date_info|date:"l" }}</span>
+                            </th>
                         {% endfor %}
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for item in calendar_data %}
+                        <tr>
+                            <td class="habit-name">
+                                <strong>{{ item.habit.name }}</strong>
+                                <br>
+                                <span class="tag is-info is-light">{{ item.habit.frequency }}</span>
+                            </td>
+                            {% for day in item.days %}
+                                <td class="has-text-centered">
+                                    {% if day.active %}
+                                        <form method="post" action="{% url 'toggle_habit' item.habit.id %}" class="is-inline">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="date" value="{{ day.date|date:'Y-m-d' }}">
+                                            <input type="checkbox" 
+                                                   {% if day.completed %}checked{% endif %}
+                                                   onchange="this.form.submit()"
+                                                   class="is-checkradio">
+                                        </form>
+                                    {% else %}
+                                        <span class="has-text-grey-light">-</span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
