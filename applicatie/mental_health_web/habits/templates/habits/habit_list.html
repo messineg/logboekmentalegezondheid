@@ -11,15 +11,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="navbar is-light mb-5">
-            <div class="navbar-brand">
-                <a class="navbar-item" href="/">Mental Health Hub</a>
+    <nav class="navbar is-primary">
+        <div class="navbar-brand">
+            
+        </div>
+        <div  class="navbar-menu">
+            <div class="navbar-start">
                 <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
                 <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
                 <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
             </div>
-        </nav>
+        </div>
+    </nav>
 
         <div class="columns">
             <div class="column is-one-third">
@@ -40,14 +43,19 @@
             </div>
             
         </div>
-        <div class="columns">
+        <div class="columns is-multiline">
             {% for habit in habit_data %}
                 <div class="column is-one-third">
                     <div class="card">
                         <div class="card-content has-text-centered">
                             <h3 class="title is-4">{{ habit.name }}</h3>
-                            <p class="subtitle">Streak: {{ streaks|get_item:habit.name }} days</p>
-                            <!-- Voeg andere details toe -->
+                            {% if streaks and habit.name in streaks %}
+                                <p class="subtitle">🔥 Current Streak: {{ streaks|dict_key:habit.name|dict_key:"current_streak" }} days</p>
+                                <p class="subtitle">🏆 Longest Streak: {{ streaks|dict_key:habit.name|dict_key:"longest_streak" }} days</p>
+                            {% else %}
+                                <p class="subtitle">🔥 Current Streak: 0 days</p>
+                                <p class="subtitle">🏆 Longest Streak: 0 days</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

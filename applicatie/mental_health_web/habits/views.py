@@ -9,6 +9,7 @@ from django.views.decorators.http import require_POST
 import json
 from .forms import HabitForm
 from .models import Habit, HabitLog
+from collections import defaultdict
 
 def calendar_view(request):
     today = date.today()
@@ -106,6 +107,7 @@ def add_habit(request):
 
 
 @require_POST
+@login_required
 def toggle_habit(request, habit_id):
     date_str = request.POST.get('date')
     if not date_str:
@@ -165,25 +167,24 @@ def calculate_streak(user):
 
     for habit in habits:
         # Verkrijg de logboeken voor de gewoonte en sorteer op datum
-        habit_logs = HabitLog.objects.filter(habit=habit).order_by('-date')
+        habit_logs = HabitLog.objects.filter(habit=habit, completed=True).order_by('date')
         
-        streak = 0
         current_streak = 0
+        longest_streak = 0
         previous_log = None
 
         for log in habit_logs:
-            if log.completed:
-                # Als de vorige log bestaat en de datum is een dag eerder, verhoog de streak
-                if previous_log and previous_log.date == log.date - timedelta(days=1):
-                    current_streak += 1
-                else:
-                    # Als er een onderbreking is, begin een nieuwe streak
-                    current_streak = 1
+            if previous_log and log.date == previous_log.date + timedelta(days=1):
+                current_streak += 1
+            else:
+                current_streak = 1  # Reset streak als er een onderbreking is
 
-                streak = max(streak, current_streak)
-            
+            longest_streak = max(longest_streak, current_streak)
             previous_log = log
 
-        streaks[habit.name] = streak
+        streaks[habit.name] = {
+            'current_streak': current_streak,
+            'longest_streak': longest_streak
+        }
 
     return streaks

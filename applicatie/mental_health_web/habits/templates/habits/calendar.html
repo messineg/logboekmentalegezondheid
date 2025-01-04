@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Calendar</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
     <style>
         .is-checkradio {
             width: 1.5em;
@@ -19,6 +19,15 @@
         }
     </style>
 </head>
+<div class="container">
+    <nav class="navbar is-primary">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">Mental Health Hub</a>
+            <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
+            <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
+            <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
+        </div>
+    </nav>
 <body class="section">
     <div class="container">
         <h1 class="title is-3 mb-5">Habit Calendar</h1>

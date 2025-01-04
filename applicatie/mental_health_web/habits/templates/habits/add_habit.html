@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Habit</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
     <style>
         body {
             background-color: #f5f5f5;
@@ -27,6 +26,8 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Mental Health Web</a>
                 <a href="{% url 'habit_list' %}" class="nav-link">Habits</a>
+                <a href="{% url 'manage_habits' %}" class="nav-link">Manage Habits</a>
+                <a href="{% url 'calendar' %}" class="nav-link">Calendar</a>
             </div>
         </nav>
 
