@@ -19,16 +19,19 @@
         }
     </style>
 </head>
-<div class="container">
+<body>
     <nav class="navbar is-primary">
         <div class="navbar-brand">
-            <a class="navbar-item" href="/">Mental Health Hub</a>
-            <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
-            <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
-            <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
+            
+        </div>
+        <div  class="navbar-menu">
+            <div class="navbar-start">
+                <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
+                <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
+                <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
+            </div>
         </div>
     </nav>
-<body class="section">
     <div class="container">
         <h1 class="title is-3 mb-5">Habit Calendar</h1>
         
