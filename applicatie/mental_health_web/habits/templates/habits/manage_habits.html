@@ -2,9 +2,21 @@
 <html lang="en">
 <head>
     <title>Manage Your Habits</title>
-    <link href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
+    <nav class="navbar is-primary">
+        <div class="navbar-brand">
+            
+        </div>
+        <div  class="navbar-menu">
+            <div class="navbar-start">
+                <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
+                <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
+                <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
+            </div>
+        </div>
+    </nav>
     <section class="section">
         <div class="container">
             <h1 class="title">Manage Your Habits</h1>

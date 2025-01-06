@@ -13,7 +13,11 @@ from collections import defaultdict
 
 def calendar_view(request):
     today = date.today()
-    start_date = today - timedelta(days=today.weekday())
+    
+    week_offset = int(request.GET.get('week_offset', 0))
+    
+    start_date = today - timedelta(days=today.weekday()) + timedelta(weeks=week_offset)
+
     dates = [start_date + timedelta(days=i) for i in range(7)]
 
     habits = Habit.objects.filter(user=request.user)
@@ -55,7 +59,8 @@ def calendar_view(request):
     return render(request, 'habits/calendar.html', {
         'calendar_data': calendar_data,
         'dates': dates,
-        'today': today
+        'today': today,
+        'week_offset': week_offset
     })
 
 

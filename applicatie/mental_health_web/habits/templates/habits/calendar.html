@@ -34,6 +34,17 @@
     </nav>
     <div class="container">
         <h1 class="title is-3 mb-5">Habit Calendar</h1>
+        <div class="buttons has-addons is-centered mb-4">
+            <a href="?week_offset={{ week_offset|add:-1 }}" class="button is-info">
+                ⬅️ Previous Week
+            </a>
+            <a href="?week_offset=0" class="button is-primary">
+                📅 This Week
+            </a>
+            <a href="?week_offset={{ week_offset|add:1 }}" class="button is-info">
+                Next Week ➡️
+            </a>
+        </div>
         
         <div class="table-container">
             <table class="table is-bordered is-fullwidth">
