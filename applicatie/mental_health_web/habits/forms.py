@@ -22,4 +22,11 @@ class HabitForm(forms.ModelForm):
     
     class Meta:
         model = Habit
-        fields = ['name', 'description', 'frequency', 'days_of_week']
+        fields = ['name', 'description', 'frequency', 'days_of_week', 'category', 'moment_of_day']
+
+
+class CategoryForm(forms.Form):
+    
+    class Meta:
+        model = Habit
+        fields = ['name']

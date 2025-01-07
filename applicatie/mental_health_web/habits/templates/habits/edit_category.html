@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Habit</title>
+    <title>Add New Category</title>
     <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
             </div>
         </nav>
 
-        <h1 class="mb-4">Add New Habit</h1>
+        <h1 class="mb-4">Add New Category</h1>
         
         <form method="post">
             {% csrf_token %}
@@ -28,7 +28,7 @@
                     {{ field }}
                 </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Create Habit</button>
+            <button type="submit" class="btn btn-primary">Create Category</button>
             <a href="{% url 'habit_list' %}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>

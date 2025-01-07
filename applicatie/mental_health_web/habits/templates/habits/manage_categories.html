@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Your Habits</title>
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
+</head>
+<body>
+<h1 class="title">Manage Categories</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if categories %}
+            {% for category in categories %}
+        <tr>
+            <td>{{ category.name }}</td>
+            <td>
+                <a href="{% url 'edit_category' category.id %}" class="button is-small is-info">Edit</a>
+                <form method="post" action="{% url 'delete_category' category.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="button is-small is-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="2">No categories found.</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+</body>
+</html>

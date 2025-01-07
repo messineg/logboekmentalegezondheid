@@ -7,10 +7,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 import json
-from .forms import HabitForm
-from .models import Habit, HabitLog
+from .forms import HabitForm, CategoryForm
+from .models import Habit, HabitLog, Category
 from collections import defaultdict
 
+@login_required
 def calendar_view(request):
     today = date.today()
     
@@ -163,7 +164,22 @@ def edit_habit(request, habit_id):
     return render(request, 'habits/habit_form.html', {'form': form, 'title': "Edit Habit"})
 
 
+def edit_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
 
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            category = form.save()
+            return redirect('manage_habits')
+    else:
+        form = CategoryForm(instance=category)
+    
+    return render(request, 'habits/edit_category.html', {'form': form, 'title': "Edit Category"})
+
+def manage_categories(request):
+    categories = Category.objects.filter(user=request.user)
+    return render(request, 'habits/manage_categories.html', {'categories': categories})
 
 def calculate_streak(user):
     habits = Habit.objects.filter(user=user)
