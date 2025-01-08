@@ -41,14 +41,9 @@ def add_entry(request):
 
         if form.is_valid():
             new_entry = form.save()
-
             mood = new_entry.mood
-            print(f"Looking for advice where {mood} is between min_mood and max_mood")
             advices = Advice.objects.filter(min_mood__lte=mood, max_mood__gte=mood)
-
             sorted_advices = sorted(advices, key=lambda advice: advice.calculate_score(), reverse=True)
-
-            print(f"Advice found: {advices}")
             return render(request, 'entries/entry_added.html', {'entry': new_entry, 'advices': sorted_advices})
         
     else:
@@ -134,8 +129,6 @@ def statistics_view(request):
         'advices': advices,
     }
 
-    print(context)
-    print(advices)
     return render(request, 'entries/statistics.html', context)
 
 
