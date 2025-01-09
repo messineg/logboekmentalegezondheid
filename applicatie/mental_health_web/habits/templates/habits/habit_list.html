@@ -1,83 +1,181 @@
 {% load custom_filters %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habit Tracker</title>
-    <!-- Bulma CSS link -->
+    <title>Habit Tracker Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar is-primary">
-        <div class="navbar-brand">
-            
-        </div>
-        <div  class="navbar-menu">
-            <div class="navbar-start">
-                <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
-                <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
-                <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
+    <div class="columns is-gapless" style="min-height: 100vh;">
+        <!-- Enhanced Sidebar -->
+        <aside class="column is-2 has-background-white-bis" style="box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+            <div class="p-5">
+                <h1 class="title is-4 mb-6">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
+                        <span>Dashboard</span>
+                    </span>
+                </h1>
+                <aside class="menu">
+                    <ul class="menu-list">
+                        <li>
+                            <a class="is-active">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fas fa-list"></i>
+                                    </span>
+                                    <span>Habits</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'manage_habits' %}">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fas fa-cog"></i>
+                                    </span>
+                                    <span>Manage Habits</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'calendar' %}">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </span>
+                                    <span>Calendar</span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </aside>
             </div>
-        </div>
-    </nav>
+        </aside>
 
-        <div class="columns">
-            <div class="column is-one-third">
-                <div class="card">
-                    <div class="card-content has-text-centered">
-                        <p class="title is-2">{{ total_habits }}</p>
-                        <p class="subtitle">Active Habits</p>
-                    </div>
+        <!-- Main Content -->
+        <div class="column">
+            <!-- Enhanced Navbar -->
+            <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <a class="navbar-item">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-check-square"></i>
+                            </span>
+                            <span class="has-text-weight-bold">Habit Tracker</span>
+                        </span>
+                    </a>
                 </div>
-            </div>
-            <div class="column is-one-third">
-                <div class="card has-background-success has-text-white">
-                    <div class="card-content has-text-centered">
-                        <p class="title is-2">{{ completion_rate }}%</p>
-                        <p class="subtitle">Completed Today</p>
+            </nav>
+
+            <!-- Dashboard Content -->
+            <section class="section">
+                <!-- Stats Cards -->
+                <div class="columns is-multiline">
+                    <div class="column is-half">
+                        <div class="box has-text-centered">
+                            <p class="heading is-size-6">Active Habits</p>
+                            <p class="title is-1">{{ total_habits }}</p>
+                            <span class="icon is-large has-text-info">
+                                <i class="fas fa-tasks fa-2x"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-        </div>
-        <div class="columns is-multiline">
-            {% for habit in habit_data %}
-                <div class="column is-one-third">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h3 class="title is-4">{{ habit.name }}</h3>
-                            {% if streaks and habit.name in streaks %}
-                                <p class="subtitle">🔥 Current Streak: {{ streaks|dict_key:habit.name|dict_key:"current_streak" }} days</p>
-                                <p class="subtitle">🏆 Longest Streak: {{ streaks|dict_key:habit.name|dict_key:"longest_streak" }} days</p>
-                            {% else %}
-                                <p class="subtitle">🔥 Current Streak: 0 days</p>
-                                <p class="subtitle">🏆 Longest Streak: 0 days</p>
-                            {% endif %}
+                    <div class="column is-half">
+                        <div class="box has-text-centered has-background-success has-text-white">
+                            <p class="heading is-size-6">Completed Today</p>
+                            <p class="title is-1">{{ completion_rate }}%</p>
+                            <span class="icon is-large">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+
+                <!-- Habit Streaks -->
+                <div class="columns is-multiline">
+                    {% for habit in habit_data %}
+                        <div class="column is-one-third">
+                            <div class="box has-text-centered">
+                                <h3 class="title is-4 mb-4">{{ habit.name }}</h3>
+                                <div class="level">
+                                    <div class="level-item has-text-centered">
+                                        <div>
+                                            <p class="heading">Current Streak</p>
+                                            <div class="is-flex is-justify-content-center is-align-items-center">
+                                                <span class="icon has-text-danger mr-2">
+                                                    <i class="fas fa-fire"></i>
+                                                </span>
+                                                <p class="title is-4">
+                                                    {{ streaks|dict_key:habit.name|dict_key:"current_streak" }} days
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="level-item has-text-centered">
+                                        <div>
+                                            <p class="heading">Longest Streak</p>
+                                            <div class="is-flex is-justify-content-center is-align-items-center">
+                                                <span class="icon has-text-warning mr-2">
+                                                    <i class="fas fa-trophy"></i>
+                                                </span>
+                                                <p class="title is-4">
+                                                    {{ streaks|dict_key:habit.name|dict_key:"longest_streak" }} days
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Today's Habits -->
+                <div class="box">
+                    <h2 class="title is-4 mb-4">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </span>
+                            <span>Today's Habits</span>
+                        </span>
+                    </h2>
+                    <div class="tags are-medium">
+                        {% for habit in habits_today %}
+                            <div class="is-flex is-align-items-center mb-2 mr-4">
+                                <span class="tag is-info mr-2">{{ habit.name }}</span>
+                                {% if habit.completed %}
+                                    <span class="tag is-success">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                            <span>Completed</span>
+                                        </span>
+                                    </span>
+                                {% else %}
+                                    <span class="tag is-warning">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-clock"></i>
+                                            </span>
+                                            <span>Pending</span>
+                                        </span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
         </div>
-        <div class="box">
-            <h2 class="title is-4">Today's Habits</h2>
-            <ul>
-                {% for habit in habits_today %}
-                    <li>
-                        <span class="tag is-info">{{ habit.name }}</span>
-                        {% if habit.completed %}
-                            <span class="tag is-success">Completed</span>
-                        {% else %}
-                            <span class="tag is-warning">Pending</span>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>    
-    <!-- Bulma JS (optional for some features) -->
-    <script src="https://cdn.jsdelivr.net/npm/bulma@0.9.3/js/bulma.min.js"></script>
+    </div>
 </body>
 </html>
