@@ -18,3 +18,6 @@ data/test_entries.csv
 
 # Negeer de andere testdata csv file
 data/test_advices.csv
+
+# Negeer de lokale database
+data/mental_log.db
