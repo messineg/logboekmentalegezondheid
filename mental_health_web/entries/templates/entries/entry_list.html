@@ -73,6 +73,9 @@
                         {% endif %}
         
                     </td>
+                    <td>
+                        <a class="button is-small is-primary" href="{% url 'edit_entry' entry.id %}">Edit</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

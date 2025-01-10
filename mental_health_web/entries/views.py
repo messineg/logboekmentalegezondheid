@@ -51,6 +51,19 @@ def add_entry(request):
     
     return render(request, 'entries/add_entry.html', {'form': form})
 
+def edit_entry(request, entry_id):
+    entry = get_object_or_404(Entry, id=entry_id)
+
+    if request.method == "POST":
+        form = EntryForm(request.POST, instance=entry)
+        if form.is_valid():
+            form.save()
+            return redirect('entry_list')  # Redirect naar de lijstpagina na het bewerken
+    else:
+        form = EntryForm(instance=entry)
+
+    return render(request, 'entries/edit_entry.html', {'form': form, 'entry': entry})
+
 def advice_list(request):
     advices = Advice.objects.all()
     return render(request, 'entries/advice_list.html', {'advices': advices})
