@@ -25,10 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-++_z9$26tx3ahjjr%r&f@+nru*lm_52)13e=3yzx+=q9t4h0^9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com', 'gmessine.pythonanywhere.com']
+#STATIC_ROOT = '/home/gmessine/logboekmentalegezondheid/static'
+#STATIC_URL = '/static/'
 
 # Application definition
 
@@ -89,8 +90,6 @@ DATABASES = {
         }
     }
 
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
