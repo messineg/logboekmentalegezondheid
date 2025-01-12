@@ -1,25 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habit Calendar</title>
-    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
-</head>
-<body>
-    <nav class="navbar is-primary">
-        <div class="navbar-brand">
-            
-        </div>
-        <div  class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="{% url 'landing_page' %}">Home</a>
-                <a href="{% url 'habit_list' %}" class="navbar-item">Habits</a>
-                <a href="{% url 'manage_habits' %}" class="navbar-item">Manage Habits</a>
-                <a href="{% url 'calendar' %}" class="navbar-item">Calendar</a>
-            </div>
-        </div>
-    </nav>
+{% extends 'habits/base.html' %}
+{% load custom_filters %}
+
+{% block title %}Calendar - Habit Tracker{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1 class="title is-3 mb-5">Habit Calendar</h1>
         <div class="buttons has-addons is-centered mb-4">
@@ -78,5 +62,4 @@
             </table>
         </div>
     </div>
-</body>
-</html>
+    {% endblock %}

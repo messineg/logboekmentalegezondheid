@@ -71,7 +71,6 @@ def habit_list(request):
     today = timezone.now().date()
     today_name = today.strftime('%A')
 
-    # Filter for active habits today
     active_habits = habits.filter(
         Q(frequency='daily') |  # All daily habits
         Q(frequency='weekly', days_of_week__icontains=today_name)  # Weekly habits for today
@@ -81,7 +80,13 @@ def habit_list(request):
         habit__in=active_habits,
         date=today
     )
-    
+    habits_today =[]
+    for habit in active_habits:
+        habits_today.append({
+            'name': habit.name,
+            'completed': logs_today.filter(habit=habit, completed=True).exists
+        })
+
     completed_today = logs_today.filter(completed=True).count()
     total_active_habits = active_habits.count()
     completion_rate = (completed_today / total_active_habits * 100) if total_active_habits > 0 else 0
@@ -92,6 +97,7 @@ def habit_list(request):
         'total_habits': total_active_habits,
         'completion_rate': int(completion_rate),
         'streaks': streaks,
+        'habits_today': habits_today,
     }
 
     return render(request, 'habits/habit_list.html', context)

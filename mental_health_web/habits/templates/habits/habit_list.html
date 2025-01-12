@@ -1,81 +1,48 @@
+{% extends 'habits/base.html' %}
 {% load custom_filters %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habit Tracker Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    <div class="columns is-gapless" style="min-height: 100vh;">
-        <!-- Enhanced Sidebar -->
-        <aside class="column is-2 has-background-white-bis" style="box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
-            <div class="p-5">
-                <h1 class="title is-4 mb-6">
-                    <span class="icon-text">
-                        <span class="icon">
-                            <i class="fas fa-chart-bar"></i>
-                        </span>
-                        <span>Dashboard</span>
-                    </span>
-                </h1>
-                <aside class="menu">
-                    <ul class="menu-list">
-                        <li>
-                            <a class="is-active">
-                                <span class="icon-text">
-                                    <span class="icon">
-                                        <i class="fas fa-list"></i>
-                                    </span>
-                                    <span>Habits</span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'manage_habits' %}">
-                                <span class="icon-text">
-                                    <span class="icon">
-                                        <i class="fas fa-cog"></i>
-                                    </span>
-                                    <span>Manage Habits</span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'calendar' %}">
-                                <span class="icon-text">
-                                    <span class="icon">
-                                        <i class="fas fa-calendar"></i>
-                                    </span>
-                                    <span>Calendar</span>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </aside>
-            </div>
-        </aside>
 
-        <!-- Main Content -->
-        <div class="column">
-            <!-- Enhanced Navbar -->
-            <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-                <div class="navbar-brand">
-                    <a class="navbar-item">
-                        <span class="icon-text">
-                            <span class="icon">
-                                <i class="fas fa-check-square"></i>
-                            </span>
-                            <span class="has-text-weight-bold">Habit Tracker</span>
-                        </span>
-                    </a>
-                </div>
-            </nav>
+{% block title %}Dashboard - Habit Tracker{% endblock %}
 
+{% block content %}
             <!-- Dashboard Content -->
             <section class="section">
+                
+                <div class="box">
+                    <h2 class="title is-4 mb-4">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </span>
+                            <span>Today's Habits</span>
+                        </span>
+                    </h2>
+                    <div class="tags are-medium">
+                        {% for habit in habits_today %}
+                            <div class="is-flex is-align-items-center mb-2 mr-4">
+                                <span class="tag is-info mr-2">{{ habit.name }}</span>
+                                {% if habit.completed %}
+                                    <span class="tag is-success">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                            <span>Completed</span>
+                                        </span>
+                                    </span>
+                                {% else %}
+                                    <span class="tag is-warning">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-clock"></i>
+                                            </span>
+                                            <span>Pending</span>
+                                        </span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
                 <!-- Stats Cards -->
                 <div class="columns is-multiline">
                     <div class="column is-half">
@@ -138,44 +105,9 @@
                 </div>
 
                 <!-- Today's Habits -->
-                <div class="box">
-                    <h2 class="title is-4 mb-4">
-                        <span class="icon-text">
-                            <span class="icon">
-                                <i class="fas fa-calendar-day"></i>
-                            </span>
-                            <span>Today's Habits</span>
-                        </span>
-                    </h2>
-                    <div class="tags are-medium">
-                        {% for habit in habits_today %}
-                            <div class="is-flex is-align-items-center mb-2 mr-4">
-                                <span class="tag is-info mr-2">{{ habit.name }}</span>
-                                {% if habit.completed %}
-                                    <span class="tag is-success">
-                                        <span class="icon-text">
-                                            <span class="icon">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                            <span>Completed</span>
-                                        </span>
-                                    </span>
-                                {% else %}
-                                    <span class="tag is-warning">
-                                        <span class="icon-text">
-                                            <span class="icon">
-                                                <i class="fas fa-clock"></i>
-                                            </span>
-                                            <span>Pending</span>
-                                        </span>
-                                    </span>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                
                 </div>
             </section>
         </div>
     </div>
-</body>
-</html>
+    {% endblock %}
