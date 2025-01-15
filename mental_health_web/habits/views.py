@@ -2,7 +2,8 @@
 import datetime
 from datetime import date, timedelta, datetime
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Func, Value
+from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -65,30 +66,35 @@ def calendar_view(request):
     })
 
 
+# SQLite gebruikt json_extract om JSON-velden te lezen
+class JsonExtract(Func):
+    function = "json_extract"
+    template = "%(function)s(%(expressions)s)"
+
 @login_required
 def habit_list(request):
     habits = Habit.objects.filter(user=request.user)
     today = timezone.now().date()
     today_name = today.strftime('%A')
 
-    active_habits = habits.filter(
-        Q(frequency='daily') |  # All daily habits
-        Q(frequency='weekly', days_of_week__icontains=today_name)  # Weekly habits for today
-    )
-    
-    logs_today = HabitLog.objects.filter(
-        habit__in=active_habits,
-        date=today
-    )
-    habits_today =[]
-    for habit in active_habits:
-        habits_today.append({
+    # Haal alle weekly habits en filter ze in Python
+    weekly_habits = [habit for habit in habits if habit.frequency == 'weekly' and today_name in habit.days_of_week]
+
+    active_habits = list(habits.filter(frequency='daily')) + weekly_habits
+
+    logs_today = HabitLog.objects.filter(habit__in=active_habits, date=today)
+    adherence_data = {habit.name: calculate_adherence(habit) for habit in active_habits}
+
+    habits_today = [
+        {
             'name': habit.name,
-            'completed': logs_today.filter(habit=habit, completed=True).exists
-        })
+            'completed': logs_today.filter(habit=habit, completed=True).exists()
+        }
+        for habit in active_habits
+    ]
 
     completed_today = logs_today.filter(completed=True).count()
-    total_active_habits = active_habits.count()
+    total_active_habits = len(active_habits)  # Changed this line
     completion_rate = (completed_today / total_active_habits * 100) if total_active_habits > 0 else 0
     streaks = calculate_streak(request.user)
 
@@ -98,6 +104,7 @@ def habit_list(request):
         'completion_rate': int(completion_rate),
         'streaks': streaks,
         'habits_today': habits_today,
+        'adherence': adherence_data
     }
 
     return render(request, 'habits/habit_list.html', context)
@@ -215,3 +222,55 @@ def calculate_streak(user):
         }
 
     return streaks
+
+def calculate_adherence(habit):
+    today = date.today()
+    start_date = habit.created_at.date()
+
+    # If habit was created today or in the future
+    if start_date > today:
+        return {'planned_days': 0, 'completed_days': 0, 'adherence_percentage': 0}
+
+    if habit.frequency == 'daily':
+        # Calculate all days from creation to today
+        planned_days = (today - start_date).days + 1
+
+    elif habit.frequency == 'weekly':
+        try:
+            days_of_week = json.loads(habit.days_of_week) if isinstance(habit.days_of_week, str) else habit.days_of_week or []
+        except json.JSONDecodeError:
+            days_of_week = []
+
+        if not days_of_week:
+            return {'planned_days': 0, 'completed_days': 0, 'adherence_percentage': 0}
+
+        # Count actual planned days by iterating through each day
+        planned_days = 0
+        current_date = start_date
+        while current_date <= today:
+            if current_date.strftime('%A') in days_of_week:
+                planned_days += 1
+            current_date += timedelta(days=1)
+
+    else:
+        return {'planned_days': 0, 'completed_days': 0, 'adherence_percentage': 0}
+
+    # Get completed days
+    completed_days = HabitLog.objects.filter(
+        habit=habit,
+        date__gte=start_date,
+        date__lte=today,
+        completed=True
+    ).count()
+
+    # Calculate adherence
+    if planned_days == 0:
+        adherence_percentage = 0
+    else:
+        adherence_percentage = round((completed_days / planned_days) * 100, 2)
+
+    return {
+        'planned_days': planned_days,
+        'completed_days': completed_days,
+        'adherence_percentage': adherence_percentage
+    }

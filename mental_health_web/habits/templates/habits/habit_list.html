@@ -4,110 +4,131 @@
 {% block title %}Dashboard - Habit Tracker{% endblock %}
 
 {% block content %}
-            <!-- Dashboard Content -->
-            <section class="section">
-                
-                <div class="box">
-                    <h2 class="title is-4 mb-4">
-                        <span class="icon-text">
-                            <span class="icon">
-                                <i class="fas fa-calendar-day"></i>
-                            </span>
-                            <span>Today's Habits</span>
+<!-- Dashboard Content -->
+<section class="section">
+
+    <div class="box">
+        <h2 class="title is-4 mb-4">
+            <span class="icon-text">
+                <span class="icon">
+                    <i class="fas fa-calendar-day"></i>
+                </span>
+                <span>Today's Habits</span>
+            </span>
+        </h2>
+        <div class="tags are-medium">
+            {% for habit in habits_today %}
+            <div class="is-flex is-align-items-center mb-2 mr-4">
+                <span class="tag is-info mr-2">{{ habit.name }}</span>
+                {% if habit.completed %}
+                <span class="tag is-success">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-check"></i>
                         </span>
-                    </h2>
-                    <div class="tags are-medium">
-                        {% for habit in habits_today %}
-                            <div class="is-flex is-align-items-center mb-2 mr-4">
-                                <span class="tag is-info mr-2">{{ habit.name }}</span>
-                                {% if habit.completed %}
-                                    <span class="tag is-success">
-                                        <span class="icon-text">
-                                            <span class="icon">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                            <span>Completed</span>
-                                        </span>
-                                    </span>
-                                {% else %}
-                                    <span class="tag is-warning">
-                                        <span class="icon-text">
-                                            <span class="icon">
-                                                <i class="fas fa-clock"></i>
-                                            </span>
-                                            <span>Pending</span>
-                                        </span>
-                                    </span>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <!-- Stats Cards -->
-                <div class="columns is-multiline">
-                    <div class="column is-half">
-                        <div class="box has-text-centered">
-                            <p class="heading is-size-6">Active Habits</p>
-                            <p class="title is-1">{{ total_habits }}</p>
-                            <span class="icon is-large has-text-info">
-                                <i class="fas fa-tasks fa-2x"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="column is-half">
-                        <div class="box has-text-centered has-background-success has-text-white">
-                            <p class="heading is-size-6">Completed Today</p>
-                            <p class="title is-1">{{ completion_rate }}%</p>
-                            <span class="icon is-large">
-                                <i class="fas fa-chart-line fa-2x"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Habit Streaks -->
-                <div class="columns is-multiline">
-                    {% for habit in habit_data %}
-                        <div class="column is-one-third">
-                            <div class="box has-text-centered">
-                                <h3 class="title is-4 mb-4">{{ habit.name }}</h3>
-                                <div class="level">
-                                    <div class="level-item has-text-centered">
-                                        <div>
-                                            <p class="heading">Current Streak</p>
-                                            <div class="is-flex is-justify-content-center is-align-items-center">
-                                                <span class="icon has-text-danger mr-2">
-                                                    <i class="fas fa-fire"></i>
-                                                </span>
-                                                <p class="title is-4">
-                                                    {{ streaks|dict_key:habit.name|dict_key:"current_streak" }} days
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-centered">
-                                        <div>
-                                            <p class="heading">Longest Streak</p>
-                                            <div class="is-flex is-justify-content-center is-align-items-center">
-                                                <span class="icon has-text-warning mr-2">
-                                                    <i class="fas fa-trophy"></i>
-                                                </span>
-                                                <p class="title is-4">
-                                                    {{ streaks|dict_key:habit.name|dict_key:"longest_streak" }} days
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Today's Habits -->
-                
-                </div>
-            </section>
+                        <span>Completed</span>
+                    </span>
+                </span>
+                {% else %}
+                <span class="tag is-warning">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-clock"></i>
+                        </span>
+                        <span>Pending</span>
+                    </span>
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
         </div>
     </div>
-    {% endblock %}
+    <!-- Stats Cards -->
+    <div class="columns is-multiline">
+        <div class="column is-half">
+            <div class="box has-text-centered">
+                <p class="heading is-size-6">Active Habits</p>
+                <p class="title is-1">{{ total_habits }}</p>
+                <span class="icon is-large has-text-info">
+                    <i class="fas fa-tasks fa-2x"></i>
+                </span>
+            </div>
+        </div>
+        <div class="column is-half">
+            <div class="box has-text-centered has-background-success has-text-white">
+                <p class="heading is-size-6">Completed Today</p>
+                <p class="title is-1">{{ completion_rate }}%</p>
+                <span class="icon is-large">
+                    <i class="fas fa-chart-line fa-2x"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Habit Streaks -->
+    <div class="columns is-multiline">
+        {% for habit in habit_data %}
+        <div class="column is-one-third">
+            <div class="box has-text-centered">
+                <h3 class="title is-4 mb-4">{{ habit.name }}</h3>
+
+                <div class="level">
+                    <!-- Current Streak -->
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Current Streak</p>
+                            <div class="is-flex is-justify-content-center is-align-items-center">
+                                <span class="icon has-text-danger mr-2">
+                                    <i class="fas fa-fire"></i>
+                                </span>
+                                <p class="title is-4">
+                                    {{ streaks|dict_key:habit.name|dict_key:"current_streak" }} days
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Longest Streak -->
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Longest Streak</p>
+                            <div class="is-flex is-justify-content-center is-align-items-center">
+                                <span class="icon has-text-warning mr-2">
+                                    <i class="fas fa-trophy"></i>
+                                </span>
+                                <p class="title is-4">
+                                    {{ streaks|dict_key:habit.name|dict_key:"longest_streak" }} days
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adding Adherence Section -->
+                <div class="mt-4 pt-4" style="border-top: 1px solid #eee;">
+                    <p class="heading">Overall Adherence</p>
+                    <div class="is-flex is-justify-content-center is-align-items-center">
+                        <span class="icon has-text-info mr-2">
+                            <i class="fas fa-chart-pie"></i>
+                        </span>
+                        <p class="title is-4">
+                            {{ adherence|dict_key:habit.name|dict_key:"adherence_percentage" }}%
+                        </p>
+                    </div>
+                    <p class="subtitle is-6">
+                        Completed {{ adherence|dict_key:habit.name|dict_key:"completed_days" }}
+                        of {{ adherence|dict_key:habit.name|dict_key:"planned_days" }} days
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+
+
+</section>
+</div>
+</div>
+{% endblock %}

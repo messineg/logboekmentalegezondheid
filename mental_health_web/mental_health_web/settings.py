@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-++_z9$26tx3ahjjr%r&f@+nru*lm_52)13e=3yzx+=q9t4h0^9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com', 'gmessine.pythonanywhere.com']
 #STATIC_ROOT = '/home/gmessine/logboekmentalegezondheid/static'
