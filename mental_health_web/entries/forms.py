@@ -5,11 +5,21 @@ from django.utils import timezone
 class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
-        fields = ['date', 'mood', 'note']  # Velden om in het formulier weer te geven
+        fields = ['date', 'mood', 'note', 'emotions', 'sleep_quality', 'healthy_activities', 'hobbies', 'meals', 'social_activities', 'weather', 'personal_growth', 'productivity', 'household_tasks']  # Velden om in het formulier weer te geven
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'input'}),
             'mood': forms.TextInput(attrs={'class': 'input'}),
             'note': forms.Textarea(attrs={'class': 'textarea'}),
+            'emotions': forms.CheckboxSelectMultiple(),
+            'sleep_quality': forms.CheckboxSelectMultiple(),
+            'healthy_activities': forms.CheckboxSelectMultiple(),
+            'hobbies': forms.CheckboxSelectMultiple(),
+            'meals': forms.CheckboxSelectMultiple(),
+            'social_activities': forms.CheckboxSelectMultiple(),
+            'weather': forms.CheckboxSelectMultiple(),
+            'personal_growth': forms.CheckboxSelectMultiple(),
+            'productivity': forms.CheckboxSelectMultiple(),
+            'household_tasks': forms.CheckboxSelectMultiple(),
         }
 
     def clean_date(self):

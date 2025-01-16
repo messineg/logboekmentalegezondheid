@@ -7,11 +7,115 @@ class Entry(models.Model):
     date = models.DateField()
     note = models.TextField()
 
+    #many to many relationships
+    emotions = models.ManyToManyField('Emotion')
+    sleep_quality = models.ManyToManyField('SleepQuality')
+    healthy_activities = models.ManyToManyField('HealthyActivity')
+    hobbies = models.ManyToManyField('Hobby')
+    meals = models.ManyToManyField('Meals')
+    social_activities = models.ManyToManyField('SocialActivity')
+    weather = models.ManyToManyField('Weather')
+    personal_growth = models.ManyToManyField('PersonalGrowth')
+    productivity = models.ManyToManyField('Productivity')
+    household_tasks = models.ManyToManyField('HouseholdTask')
+
+
     def __str__(self):
         return f"{self.date} - Mood: {self.mood} - Note: {self.note}"
     
     class Meta:
         db_table = 'Entries'
+
+class Emotion(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'Emotions'
+
+class SleepQuality(models.Model):
+    quality = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"Quality: {self.quality}"
+    
+    class Meta:
+        db_table = 'SleepQuality'
+
+class HealthyActivity(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'HealthyActivities'
+
+class Hobby(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'Hobbies'
+
+class Meals(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'Meals'
+
+class SocialActivity(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'SocialActivities'
+
+class Weather(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'Weather'
+
+
+class PersonalGrowth(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'PersonalGrowth'
+
+class Productivity(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'Productivity'
+
+class HouseholdTask(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    class Meta:
+        db_table = 'HouseholdTasks'
 
 class Advice(models.Model):
     min_mood = models.IntegerField()
