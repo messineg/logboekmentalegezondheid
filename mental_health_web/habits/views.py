@@ -73,7 +73,9 @@ class JsonExtract(Func):
 
 @login_required
 def habit_list(request):
+    print(f"Gebruiker: {request.user}")
     habits = Habit.objects.filter(user=request.user)
+    print(f"Habits gevonden: {habits.count()}")
     today = timezone.now().date()
     today_name = today.strftime('%A')
 
