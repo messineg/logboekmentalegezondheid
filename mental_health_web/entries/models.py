@@ -8,16 +8,16 @@ class Entry(models.Model):
     note = models.TextField()
 
     #many to many relationships
-    emotions = models.ManyToManyField('Emotion')
-    sleep_quality = models.ManyToManyField('SleepQuality')
-    healthy_activities = models.ManyToManyField('HealthyActivity')
-    hobbies = models.ManyToManyField('Hobby')
-    meals = models.ManyToManyField('Meals')
-    social_activities = models.ManyToManyField('SocialActivity')
-    weather = models.ManyToManyField('Weather')
-    personal_growth = models.ManyToManyField('PersonalGrowth')
-    productivity = models.ManyToManyField('Productivity')
-    household_tasks = models.ManyToManyField('HouseholdTask')
+    emotions = models.ManyToManyField('Emotion', blank=True, null=True)
+    sleep_quality = models.ManyToManyField('SleepQuality', blank=True, null=True)
+    healthy_activities = models.ManyToManyField('HealthyActivity', blank=True, null=True)
+    hobbies = models.ManyToManyField('Hobby', blank=True, null=True)
+    meals = models.ManyToManyField('Meals', blank=True, null=True)
+    social_activities = models.ManyToManyField('SocialActivity', blank=True, null=True)
+    weather = models.ManyToManyField('Weather', blank=True, null=True)
+    personal_growth = models.ManyToManyField('PersonalGrowth', blank=True, null=True)
+    productivity = models.ManyToManyField('Productivity', blank=True, null=True)
+    household_tasks = models.ManyToManyField('HouseholdTask', blank=True, null=True)
 
 
     def __str__(self):
