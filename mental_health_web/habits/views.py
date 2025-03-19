@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 import json
-from .forms import HabitForm, CategoryForm
+from .forms import HabitForm, CategoryForm, ExemptionDateForm
 from .models import Habit, HabitLog, Category
 from collections import defaultdict
 
@@ -73,11 +73,14 @@ class JsonExtract(Func):
 
 @login_required
 def habit_list(request):
-    print(f"Gebruiker: {request.user}")
     habits = Habit.objects.filter(user=request.user)
-    print(f"Habits gevonden: {habits.count()}")
     today = timezone.now().date()
     today_name = today.strftime('%A')
+
+    # Convert exempted dates to date objects
+    for habit in habits:
+        if habit.exempted_dates:
+            habit.exempted_dates = [date.fromisoformat(d) for d in habit.exempted_dates]
 
     # Haal alle weekly habits en filter ze in Python
     weekly_habits = [habit for habit in habits if habit.frequency == 'weekly' and today_name in habit.days_of_week]
@@ -96,7 +99,7 @@ def habit_list(request):
     ]
 
     completed_today = logs_today.filter(completed=True).count()
-    total_active_habits = len(active_habits)  # Changed this line
+    total_active_habits = len(active_habits) 
     completion_rate = (completed_today / total_active_habits * 100) if total_active_habits > 0 else 0
     streaks = calculate_streak(request.user)
 
@@ -228,51 +231,65 @@ def calculate_streak(user):
 def calculate_adherence(habit):
     today = date.today()
     start_date = habit.created_at.date()
-
-    # If habit was created today or in the future
-    if start_date > today:
-        return {'planned_days': 0, 'completed_days': 0, 'adherence_percentage': 0}
-
-    if habit.frequency == 'daily':
-        # Calculate all days from creation to today
-        planned_days = (today - start_date).days + 1
-
-    elif habit.frequency == 'weekly':
-        try:
-            days_of_week = json.loads(habit.days_of_week) if isinstance(habit.days_of_week, str) else habit.days_of_week or []
-        except json.JSONDecodeError:
-            days_of_week = []
-
-        if not days_of_week:
-            return {'planned_days': 0, 'completed_days': 0, 'adherence_percentage': 0}
-
-        # Count actual planned days by iterating through each day
-        planned_days = 0
-        current_date = start_date
-        while current_date <= today:
-            if current_date.strftime('%A') in days_of_week:
-                planned_days += 1
-            current_date += timedelta(days=1)
-
-    else:
-        return {'planned_days': 0, 'completed_days': 0, 'adherence_percentage': 0}
-
-    # Get completed days
-    completed_days = HabitLog.objects.filter(
-        habit=habit,
-        date__gte=start_date,
-        date__lte=today,
+    
+    # Calculate total planned days
+    planned_days = (today - start_date).days + 1
+    
+    # Get completed days from HabitLog
+    completed_logs = HabitLog.objects.filter(
+        habit=habit, 
+        date__range=[start_date, today], 
         completed=True
-    ).count()
-
-    # Calculate adherence
+    )
+    completed_days = completed_logs.count()
+    
+    # Handle exempted days
+    exempted_dates = [date.fromisoformat(d) for d in habit.exempted_dates] if habit.exempted_dates else []
+    exempted_count = sum(1 for d in range((today - start_date).days + 1) 
+                          if start_date + timedelta(days=d) in exempted_dates)
+    
+    # Subtract exempted days from planned days
+    planned_days -= exempted_count
+    
+    # Calculate adherence percentage
     if planned_days == 0:
         adherence_percentage = 0
     else:
         adherence_percentage = round((completed_days / planned_days) * 100, 2)
-
+    
     return {
         'planned_days': planned_days,
         'completed_days': completed_days,
+        'exempted_days': exempted_count,
         'adherence_percentage': adherence_percentage
     }
+
+@login_required
+def add_exemption_date(request, habit_id):
+    habit = get_object_or_404(Habit, id=habit_id, user=request.user)
+    
+    if request.method == 'POST':
+        form = ExemptionDateForm(request.POST)
+        if form.is_valid():
+            exemption_date = form.cleaned_data['exemption_date']
+            
+            # Convert date to string before storing
+            exemption_date_str = exemption_date.isoformat()
+            
+            # Ensure exempted_dates is a list
+            if habit.exempted_dates is None:
+                habit.exempted_dates = []
+            
+            # Add date if not already exempted
+            if exemption_date_str not in habit.exempted_dates:
+                habit.exempted_dates.append(exemption_date_str)
+                habit.save()
+            
+            return redirect('habit_list')  # Adjust to your dashboard view
+    else:
+        form = ExemptionDateForm()
+    
+    return render(request, 'habits/add_exemption_date.html', {
+        'form': form,
+        'habit': habit
+    })

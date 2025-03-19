@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def entry_list(request):
-    sort = request.GET.get('sort', 'date')
+    sort = request.GET.get('sort', '-date')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     mood = request.GET.get('mood')

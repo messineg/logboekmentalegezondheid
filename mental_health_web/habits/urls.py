@@ -10,4 +10,5 @@ urlpatterns = [
     path('edit/<int:habit_id>/', views.edit_habit, name='edit_habit'),
     path('categories/manage/', views.manage_categories, name='manage_categories'),
     path('categories/edit/<int:category_id>', views.edit_category, name='edit_category'),
+    path('habit/<int:habit_id>/add-exemption/', views.add_exemption_date, name='add_exemption_date'),
 ]

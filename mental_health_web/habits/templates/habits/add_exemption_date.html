@@ -1,0 +1,19 @@
+{% extends 'habits/base.html' %}
+
+{% block content %}
+<h2>Add Exemption Date for {{ habit.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Exemption Date</button>
+</form>
+
+<h3>Current Exempted Dates:</h3>
+<ul>
+    {% for date in habit.exempted_dates %}
+        <li>{{ date }}</li>
+    {% empty %}
+        <li>No exempted dates yet</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -23,6 +23,8 @@ class Habit(models.Model):
     days_of_week = models.JSONField(default=list,blank=True)
     moment_of_day = models.CharField(max_length=15, choices=[('morning', 'Morning'), ('afternoon', 'Afternoon'), ('evening', 'Evening')], blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    exempted_dates = models.JSONField(default=list, blank=True)
     
     def __str__(self):
         return self.name

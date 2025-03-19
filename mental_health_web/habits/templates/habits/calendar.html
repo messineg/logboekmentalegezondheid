@@ -27,7 +27,11 @@
                             <th class="has-text-centered {% if date_info == today %}is-selected{% endif %}">
                                 {{ date_info|date:"D M d" }}
                                 <br>
-                                <span class="is-size-7">{{ date_info|date:"l" }}</span>
+                                <span class="is-size-7">
+                                    {{ date_info|date:"l" }}
+                                    <br>
+                                    Week {{ date_info|date:"W" }}
+                                </span>
                             </th>
                         {% endfor %}
                     </tr>
